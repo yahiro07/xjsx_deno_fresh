@@ -10,7 +10,7 @@ In deno.json, add the following configurations.
 ```json
   "imports": {
     ... (other imports),
-    "xjsx/jsx-runtime": "https://deno.land/x/xjsx@0.1.1/jsx-runtime.ts",
+    "xjsx/jsx-runtime": "https://deno.land/x/xjsx@<version>/jsx-runtime.ts",
   },
   "compilerOptions": {
     "jsx": "react-jsx",
