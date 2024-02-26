@@ -27,9 +27,9 @@ function addClassNamesToProps(props: any, ...classNames: IClassName[]) {
   return { ...props, class: cx(props.class, ...classNames) };
 }
 
-const symbolAdapterFn = Symbol("props-q-adapter-fn");
+const symbolFcAttachment = Symbol("props-q-fc-attachment");
 type IOriginalFunctionComponent = Function & {
-  [symbolAdapterFn]?: Function;
+  [symbolFcAttachment]?: Record<string, Function>;
 };
 
 export function customJsxAdapter(
@@ -43,9 +43,9 @@ export function customJsxAdapter(
 
   if (typeof tag === "function" && propsQ) {
     const originalFunctionComponent = tag as IOriginalFunctionComponent;
-    tag = originalFunctionComponent[symbolAdapterFn] ??= (
-      props: IComponentPropsExtra
-    ) => {
+    const attachment = (originalFunctionComponent[symbolFcAttachment] ??= {});
+
+    tag = attachment[propsQ.toString()] ??= (props: IComponentPropsExtra) => {
       const res = originalFunctionComponent(props);
       if (res === null) return null;
       res.props = addClassNamesToProps(res.props, ...enclose(propsQ));
